@@ -6,14 +6,16 @@ import java.util.Scanner;
 
 public class Main {
     //Constantes que definem os comandos
-    public static final String ADD_CONTACT    = "AC";
-    public static final String REMOVE_CONTACT = "RC";
-    public static final String GET_PHONE      = "GP";
-    public static final String GET_EMAIL      = "GE";
-    public static final String SET_PHONE      = "SP";
-    public static final String SET_EMAIL      = "SE";
-    public static final String LIST_CONTACTS  = "LC";
-    public static final String QUIT           = "Q";
+    public static final String ADD_CONTACT          = "AC";
+    public static final String REMOVE_CONTACT       = "RC";
+    public static final String GET_PHONE            = "GP";
+    public static final String GET_EMAIL            = "GE";
+    public static final String SET_PHONE            = "SP";
+    public static final String SET_EMAIL            = "SE";
+    public static final String LIST_CONTACTS        = "LC";
+    public static final String SEARCH_BY_PHONE      = "GN";
+    public static final String CHECK_SHARED_PHONES  = "EP";
+    public static final String QUIT                 = "Q";
 
     //Constantes que definem as mensagens para o utilizador
     public static final String CONTACT_EXISTS = "contactBook.Contact already exists.";
@@ -22,6 +24,10 @@ public class Main {
     public static final String CONTACT_REMOVED = "contactBook.Contact removed.";
     public static final String CONTACT_UPDATED = "contactBook.Contact updated.";
     public static final String BOOK_EMPTY = "contactBook.Contact book empty.";
+    public static final String PHONE_EXISTS = "%s";
+    public static final String PHONE_NOT_EXIST = "Phone number does not exist.";
+    public static final String SHARED_PHONES = "There are contacts that share phone numbers";
+    public static final String NO_SHARED_PHONES = "All contacts have different phone numbers";
     public static final String QUIT_MSG = "Goodbye!";
     public static final String COMMAND_ERROR = "Unknown command.";
 
@@ -53,6 +59,11 @@ public class Main {
                 case LIST_CONTACTS:
                     listAllContacts(cBook);
                     break;
+                case SEARCH_BY_PHONE:
+                    searchByPhone(in, cBook);
+                    break;
+                case CHECK_SHARED_PHONES:
+                    checkSharedPhones(cBook);
                 default:
                     System.out.println(COMMAND_ERROR);
             }
@@ -146,5 +157,22 @@ public class Main {
             }
         }
         else System.out.println(BOOK_EMPTY);
+    }
+
+    private static void searchByPhone(Scanner in, ContactBook cBook) {
+        int phone = in.nextInt();
+        if (cBook.hasPhone(phone)) {
+            String name = cBook.searchByPhone(phone);
+            System.out.printf(PHONE_EXISTS, name);
+        }
+        else System.out.println(PHONE_NOT_EXIST);
+    }
+
+    private static void checkSharedPhones(ContactBook cBook) {
+        boolean result = cBook.checkSharedPhones();
+        if (result) {
+            System.out.println(SHARED_PHONES);
+        }
+        else System.out.println(NO_SHARED_PHONES);
     }
 }
