@@ -2,6 +2,8 @@ package contactBook;
 
 import contactBook.Contact;
 
+import java.util.HashSet;
+
 public class ContactBook {
     static final int DEFAULT_SIZE = 100;
 
@@ -102,10 +104,22 @@ public class ContactBook {
     }
 
     public String searchByPhone(int phone) {
-        for(int i = 0; i < counter; i++) {
+        for (int i = 0; i < counter; i++) {
             if(contacts[i].getPhone() == phone)
                 return contacts[i].getName();
         }
         return null;
     }
+
+    public boolean checkSharedPhones() {
+        HashSet<Integer> phoneNumbers = new HashSet<>();
+
+        for (int i = 0; i < counter; i++) {
+            if (!phoneNumbers.add(contacts[i].getPhone()))
+                return true;
+        }
+
+        return false;
+    }
+
 }
